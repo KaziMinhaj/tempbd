@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import StripeCheckout from "react-stripe-checkout";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -159,16 +159,21 @@ const Button = styled.button`
   font-weight: 600;
   border: none;
 `;
-
 const Cart = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const { orderState } = useContext(UserContext);
   const [orders, setOrders] = orderState;
   const [orderKeyValues, setorderKeyValues] = useState(null);
+  const [subtotal, setTotalSubtotal] = useState(0);
 
+  const navigate = useNavigate();
   const handleToken = (token, addresses) => {
     console.log({ token, addresses });
     notify();
+
+    setTimeout(() => {
+      navigate("/");
+    }, 5000);
   };
   const notify = () =>
     toast("Success! check your email for digital recipt !", {
@@ -194,6 +199,17 @@ const Cart = () => {
   useEffect(() => {
     loadItems();
   }, []);
+
+  useEffect(() => {
+    setTotalSubtotal(
+      selectedItems
+        .map((item) => item.price)
+        .reduce(
+          (previousValue, currentValue) => previousValue + currentValue,
+          0
+        )
+    );
+  }, [selectedItems, orders]);
 
   return (
     <Container>
@@ -223,34 +239,41 @@ const Cart = () => {
                   />
                 ))}
           </Info>
+
           <Summary>
             <SummaryTitle>ORDER SUMMARY</SummaryTitle>
             <SummaryItem>
               <SummaryItemText>Subtotal</SummaryItemText>
-              <SummaryItemPrice>80 tk</SummaryItemPrice>
+              <SummaryItemPrice>{subtotal} tk</SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Estimated Shipping</SummaryItemText>
-              <SummaryItemPrice>5.90 tk</SummaryItemPrice>
+              <SummaryItemPrice>
+                {subtotal * (5 / 100).toFixed(2)}tk
+              </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem>
               <SummaryItemText>Shipping Discount</SummaryItemText>
-              <SummaryItemPrice>-5.90 tk</SummaryItemPrice>
+              <SummaryItemPrice>
+                - {subtotal * (5 / 100).toFixed(2)} tk
+              </SummaryItemPrice>
             </SummaryItem>
             <SummaryItem type="total">
               <SummaryItemText>Total</SummaryItemText>
-              <SummaryItemPrice>80 tk</SummaryItemPrice>
+              <SummaryItemPrice>{subtotal} tk</SummaryItemPrice>
             </SummaryItem>
             <Button>
               <StripeCheckout
                 stripeKey="pk_test_51Kp4RIJ9qu66IGFAvajolEJbohc2zM1eMMzUKE58WAlcNl1c79TXPqBIsDCLsfURqf9wOYByd9Nz10RwXNbxE17o008n31UAy1"
+                billingAddress
+                shippingAddress
                 token={handleToken}
                 style={{ width: "100%" }}
               />
               <ToastContainer
                 position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
+                autoClose={2000}
+                hideProgressBar={true}
                 newestOnTop={false}
                 closeOnClick
                 rtl={false}

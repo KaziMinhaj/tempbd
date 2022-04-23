@@ -100,38 +100,42 @@ const Product = ({ item }) => {
     toast(`${item.name} has been added`, { type: "success" });
 
   return (
-    <Container>
-      <Circle />
-      <Image src={item.img} />
-      <Info>
-        <Title>
-          Name: {item.name}
-          <br></br>
-          Price: ${item.price}
-          <br></br>
-        </Title>
+    <>
+      <Container>
+        <Circle />
+        <Image src={item.img} />
 
-        <Icon>
-          <ShoppingCartOutlined
-            onClick={() => {
-              addToOrder(item._id, item);
-            }}
+        <Info>
+          <Title>
+            Name: {item.name}
+            <br></br>
+            Price: ${item.price}
+            <br></br>
+            Rating: ⭐⭐⭐
+          </Title>
+
+          <Icon>
+            <ShoppingCartOutlined
+              onClick={() => {
+                addToOrder(item._id, item);
+              }}
+            />
+          </Icon>
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={true}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
           />
-        </Icon>
-        <ToastContainer
-          position="bottom-right"
-          autoClose={5000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored"
-        />
-      </Info>
-    </Container>
+        </Info>
+      </Container>
+    </>
   );
 };
 

@@ -12,8 +12,8 @@ const Container = styled.div`
   width: auto;
 `;
 
-const Headline = () => {
-  return <Container>Popular Items 🔥 </Container>;
+const Headline = ({ text }) => {
+  return <Container>{text} 🔥 </Container>;
 };
 
 export default Headline;

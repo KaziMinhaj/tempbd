@@ -1,9 +1,8 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { sliderItems } from "../data";
 import { mobile } from "../responsive";
-import { Routes, Route, Link } from "react-router-dom";
 
 const Container = styled.div`
   width: 100%;
@@ -12,7 +11,6 @@ const Container = styled.div`
   position: relative;
   overflow: hidden;
   ${mobile({ display: "none" })}
-
 `;
 
 const Arrow = styled.div`
@@ -91,13 +89,13 @@ const Slider = () => {
     } else {
       setSlideIndex(slideIndex < 2 ? slideIndex + 1 : 0);
     }
-  };  
+  };
 
   useEffect(() => {
     fetch("http://localhost:7000/sliderItems")
       .then((res) => res.json())
       .then((data) => {
-        setSliderItems(data.result)
+        setSliderItems(data.result);
       });
   }, []);
 
@@ -109,14 +107,21 @@ const Slider = () => {
       <Wrapper slideIndex={slideIndex}>
         {sliderItems.map((item) => (
           <Slide bg={item.bg} key={item.id}>
-            { <ImgContainer>
-              <Image src={item.img} />
-            </ImgContainer> }
+            {
+              <ImgContainer>
+                <Image src={item.img} />
+              </ImgContainer>
+            }
             <InfoContainer>
               <Title>{item.title}</Title>
               <Desc>{item.desc}</Desc>
               <Button>
-                <Link style={{textDecoration: "none", color:"black"}} to="/productlist">SHOW NOW</Link>
+                <Link
+                  style={{ textDecoration: "none", color: "black" }}
+                  to="/productlist"
+                >
+                  SHOW NOW
+                </Link>
               </Button>
             </InfoContainer>
           </Slide>
