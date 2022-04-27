@@ -2,28 +2,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 const router = express.Router();
 
-const adminModel = require("../Model/adminModel");
-const Admin = new mongoose.model("Admin", adminModel);
+const newItemModel = require("../Model/newItemModel");
+const NewItem = new mongoose.model("NewItem", newItemModel);
 
-// GET ALL THE Admin
+// GET ALL THE Item
 router.get("/", async (req, res) => {
-  await Admin.find((err, data) => {
-      if (err) {
-        res.status(500).json({
-          error: "There was a server side error!",
-        });
-      } else {
-        res.status(200).json({
-          result: data,
-          message: "Success",
-        });
-      }
-    });
-});
-
-// GET A Admin by ID
-router.get("/:id", async (req, res) => {
-  await Admin.find({ _id: req.params.id }, (err, data) => {
+  await NewItem.find((err, data) => {
     if (err) {
       res.status(500).json({
         error: "There was a server side error!",
@@ -37,33 +21,48 @@ router.get("/:id", async (req, res) => {
   });
 });
 
-// POST A Admin
-router.post("/addAdmin", async (req, res) => {
-  const newAdmin = new Admin(req.body);
-  await newAdmin.save((err) => {
+// GET A Item by ID
+router.get("/:id", async (req, res) => {
+  await NewItem.find({ _id: req.params.id }, (err, data) => {
     if (err) {
       res.status(500).json({
         error: "There was a server side error!",
       });
     } else {
       res.status(200).json({
-        message: "Admin was inserted successfully!",
+        result: data,
+        message: "Success",
       });
     }
   });
 });
 
-
-// DELETE Admin
-router.delete("/:id", async (req, res) => {
-  await Admin.deleteOne({ _id: req.params.id }, (err) => {
+// POST A Item
+router.post("/addItem", async (req, res) => {
+  const newItem = new NewItem(req.body);
+  await newItem.save((err) => {
     if (err) {
       res.status(500).json({
         error: "There was a server side error!",
       });
     } else {
       res.status(200).json({
-        message: "Admin was deleted successfully!",
+        message: "Item was inserted successfully!",
+      });
+    }
+  });
+});
+
+// DELETE Item
+router.delete("/:id", async (req, res) => {
+  await NewItem.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      res.status(500).json({
+        error: "There was a server side error!",
+      });
+    } else {
+      res.status(200).json({
+        message: "Item was deleted successfully!",
       });
     }
   });

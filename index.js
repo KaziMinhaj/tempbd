@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const adminController = require("./MVC Structure/Controller/adminController");
-const reviewController = require("./MVC Structure/Controller/reviewController");
+
 const itemController = require("./MVC Structure/Controller/itemController");
 const sliderItemController = require("./MVC Structure/Controller/sliderItemController");
+const newItemController = require("./MVC Structure/Controller/newItemController");
 
 // express app initialization
 const app = express();
@@ -19,10 +19,9 @@ mongoose
   .catch((err) => console.log(err));
 
 // application routes
-app.use("/admin", adminController);
-app.use("/review", reviewController);
 app.use("/items", itemController);
-app.use("/sliderItems",sliderItemController );
+app.use("/sliderItems", sliderItemController);
+app.use("/newItems", newItemController);
 
 // default error handler
 function errorHandler(err, req, res, next) {
@@ -32,6 +31,6 @@ function errorHandler(err, req, res, next) {
   res.status(500).json({ error: err });
 }
 
-app.listen(7000, () => {
+module.exports = app.listen(7000, () => {
   console.log("app listening at port 7000");
 });
