@@ -8,7 +8,7 @@ chai.should();
 
 chai.use(chaiHttp);
 
-describe("TEST ALL ITEMS API", () => {
+describe("TEST ITEM API", () => {
   //get new items
   describe("GET /items", () => {
     it("It should GET all the Slider Items", (done) => {
@@ -86,7 +86,7 @@ describe("TEST ALL ITEMS API", () => {
               });
       });
   })
-      //Test GET NEW ITEM BY ID API
+      //Test GET  ITEM BY ID API
       describe("GET /items/:id", () => {
         it("It should get a Item by Id and return 200", (done) => {
             const itemId = "625c422714a10d1360625eef";
